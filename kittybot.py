@@ -2,8 +2,8 @@ import os
 import requests
 import logging
 from dotenv import load_dotenv
-from telegram.ext import Updater, CommandHandler
-from telegram import ReplyKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram import ReplyKeyboardMarkup, Update
 
 
 load_dotenv()
@@ -17,7 +17,8 @@ logging.basicConfig(
 )
 
 
-def get_new_image():
+def get_new_image() -> str:
+    '''Получить новую картинку котика'''
     try:
         response = requests.get(URL).json()
     except Exception as error:
@@ -29,12 +30,14 @@ def get_new_image():
     return random_cat
 
 
-def new_cat(update, context):
+def new_cat(update: Update, context: CallbackContext) -> None:
+    '''Отправить новую картинку котика'''
     chat = update.effective_chat
     context.bot.send_photo(chat.id, get_new_image())
 
 
-def wake_up(update, context):
+def wake_up(update: Update, context: CallbackContext) -> None:
+    '''Отправить приветственное сообщение и картинку котика'''
     chat = update.effective_chat
     name = update.message.chat.first_name
     button = ReplyKeyboardMarkup([['/newcat']], resize_keyboard=True)
@@ -47,7 +50,8 @@ def wake_up(update, context):
     context.bot.send_photo(chat.id, get_new_image())
 
 
-def main():
+def main() -> None:
+    '''Добавить хендлеры и начать поллинг'''
     updater = Updater(token=token)
 
     updater.dispatcher.add_handler(CommandHandler('start', wake_up))
