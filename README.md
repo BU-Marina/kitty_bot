@@ -44,8 +44,8 @@ def wake_up(update, context)
 * Функция `wake_up()` принимает на вход экземпляры классов `Update` и `CallbackContext`.
 * При выполнении функции для экземпляра `Update` вызывается свойство `effective_chat`, возвращающее
 объект класса `telegram.Chat`. Он сохраняется в переменную `chat`.
-* Для того же экземпляра вызывается свойство `message.chat.first_name`, возвращающее имя адресата (str). Оно сохраняется в переменную `name`.
-* В переменную `button` сохраняется объект класса `ReplyKeyboardMarkup` с параметрами `KeyboardButton = '/newcat'` и `resize_keyboard=True`
+* Для того же экземпляра вызывается свойство `message.chat.first_name`, возвращающее имя адресата. Оно сохраняется в переменную `str: name`.
+* В переменную `button` сохраняется объект класса `ReplyKeyboardMarkup` с параметрами `KeyboardButton='/newcat'` и `resize_keyboard=True`
 (для создания кнопки \newcat с изменённым размером).
 * Для экземпляра `CallbackContext`, переданного в функцию как `context`, поочерёдно вызываются методы
 `send_message` и `send_photo` объекта `telegram.ext.ExtBot`. В `send_message` передаётся свойство `id` объекта класса `Chat`, текст сообщения-приветствия и объект класса `ReplyKeyboardMarkup` для отображения кнопки `button`. Метод отправляет заданный текст-приветсвие в чат с `id` равным `chat.id` и отображает переданную кнопку. Затем метод `send_photo` отправляет картинку в тот же чат.
@@ -56,7 +56,7 @@ def wake_up(update, context)
 def main()
 ```
 * Функция `main()` создаёт объект класса `Updater` с `token`, взятым из переменных окружения (.env).
-* Для этого объекта поочерёдно вызывается метод `add_handler` экземпляра класса `telegram.ext.Dispatcher`. В метод передаётся экземпляры класса CommandHandler с параметрами `command='start'`, `callback=wake_up` и `command='newcat'`, `callback=new_cat`, что позволяет для команды `\start (\newcat)` вызвать функцию `wake_up (new_cat)` и неявно передать в неё экземпляры `Update` и `CallbackContext`.
+* Для этого объекта поочерёдно вызывается метод `add_handler` экземпляра класса `telegram.ext.Dispatcher`. В метод передаются экземпляры класса CommandHandler с параметрами `command='start'`, `callback=wake_up` и `command='newcat'`, `callback=new_cat`, что позволяет для команды `\start (\newcat)` вызвать функцию `wake_up (new_cat)` и неявно передать в неё экземпляры `Update` и `CallbackContext`.
 * Для того же объекта `updater` вызывается метод `start_polling`, который начинает отправлять запросы к серверу Telegram и проверять обновления (каждые 10 секунд по умол.). Метод `idle` позволяет прервать отправку запросов в терминале комбинацией CTRL+C.
 
 ## Как запустить проект
@@ -106,6 +106,7 @@ nano .env
 Вставить токен своего бота, сохранить изменения и выйти из режима (ctrl+o -> Enter -> ctrl+x)
 
 ---
+----
 Запустить проект:
 
 ```
@@ -119,6 +120,7 @@ pytest
 ```
 
 ---
+----
 Запустить бота в telegram:
 
 ```
